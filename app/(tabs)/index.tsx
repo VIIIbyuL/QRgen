@@ -3,7 +3,6 @@ import { Text, View, StyleSheet, Button, Linking, Alert } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { auth } from "../../firebase";
 import { signOut } from "firebase/auth";
-import { router } from "expo-router";
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
@@ -15,8 +14,6 @@ export default function App() {
       .then(() => {
         // Sign-out successful.
         console.log("User signed out");
-        
-        
       })
       .catch((error) => {
         // An error happened.
@@ -79,6 +76,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <Text>Email: {auth.currentUser?.email}</Text>
       <View style={styles.barcodebox}>
         <BarCodeScanner
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
@@ -87,21 +85,24 @@ export default function App() {
       </View>
       <Text style={styles.maintext}>{text}</Text>
 
-      {scanned && (
-        <Button
-          title={"Scan"}
-          onPress={() => setScanned(false)}
-          color="tomato"
-        />
-      )}
+      <Button title={"Scan"} onPress={() => setScanned(false)} color="tomato" />
 
-      {scanned && text.match(/https?:\/\/.+/) && (
-        <Button
-          title={"Open Link"}
-          onPress={() => Linking.openURL(text)}
-          color="blue"
-        />
-      )}
+      <Button
+  title={"Open Link"}
+  onPress={() => {
+    Linking.openURL(text)
+      .then(() => {
+        console.log("URL opened successfully");
+      })
+      .catch((err) => {
+        console.error("Error occurred while opening the URL:", err);
+        Alert.alert("Error", "Unable to open the link.");
+      });
+  }}
+  color="blue"
+/>
+
+
       <Button title="Sign Out" onPress={handleSignOut} />
     </View>
   );
