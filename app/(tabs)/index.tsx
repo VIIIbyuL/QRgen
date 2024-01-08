@@ -22,7 +22,7 @@ export default function App() {
     // Check if the scanned text is a valid URL
     if (text.match(/https?:\/\/.+/)) {
       Linking.openURL(text).catch((err) =>
-        Alert.alert("Invalid URL", "The scanned text is not a valid URL.")
+        Alert.alert("Invalid URL", "The scanned text is not a valid URL."),
       );
     } else {
       Alert.alert("Not a URL", "The scanned text is not a URL.");
