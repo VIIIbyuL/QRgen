@@ -76,7 +76,11 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>Email: {auth.currentUser?.email}</Text>
+      <View style={styles.inlineView}>
+        <Text style={styles.maintext}>Email: {auth.currentUser?.email}</Text>
+        <Button title="Sign Out" onPress={handleSignOut} />
+      </View>
+
       <View style={styles.barcodebox}>
         <BarCodeScanner
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
@@ -88,22 +92,19 @@ export default function App() {
       <Button title={"Scan"} onPress={() => setScanned(false)} color="tomato" />
 
       <Button
-  title={"Open Link"}
-  onPress={() => {
-    Linking.openURL(text)
-      .then(() => {
-        console.log("URL opened successfully");
-      })
-      .catch((err) => {
-        console.error("Error occurred while opening the URL:", err);
-        Alert.alert("Error", "Unable to open the link.");
-      });
-  }}
-  color="blue"
-/>
-
-
-      <Button title="Sign Out" onPress={handleSignOut} />
+        title={"Open"}
+        onPress={() => {
+          Linking.openURL(text)
+            .then(() => {
+              console.log("URL opened successfully");
+            })
+            .catch((err) => {
+              console.error("Error occurred while opening the URL:", err);
+              Alert.alert("Error", "Unable to open the link.");
+            });
+        }}
+        color="blue"
+      />
     </View>
   );
 }
@@ -127,5 +128,9 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     borderRadius: 30,
     backgroundColor: "tomato",
+  },
+  inlineView: {
+    flexDirection: "row", // Aligns children in a horizontal row
+    alignItems: "center", // Centers children vertically in the row
   },
 });
