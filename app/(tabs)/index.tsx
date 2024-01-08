@@ -29,7 +29,7 @@ export default function App() {
     }
   };
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = ({ type, data }: { type: string, data: string }) => {
     setScanned(true);
     setText(data);
     console.log("Type: " + type + "\nData: " + data);
