@@ -1,11 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, Button, Linking, Alert } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
+import { auth } from "../../firebase";
+import { signOut } from "firebase/auth";
+import { router } from "expo-router";
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
   const [text, setText] = useState("Not yet scanned");
+
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        console.log("User signed out");
+        
+        
+      })
+      .catch((error) => {
+        // An error happened.
+        console.error("Error signing out: ", error);
+      });
+  };
 
   const askForCameraPermission = () => {
     (async () => {
@@ -22,14 +39,20 @@ export default function App() {
     // Check if the scanned text is a valid URL
     if (text.match(/https?:\/\/.+/)) {
       Linking.openURL(text).catch((err) =>
-        Alert.alert("Invalid URL", "The scanned text is not a valid URL."),
+        Alert.alert("Invalid URL", "The scanned text is not a valid URL.")
       );
     } else {
       Alert.alert("Not a URL", "The scanned text is not a URL.");
     }
   };
 
-  const handleBarCodeScanned = ({ type, data }: { type: string, data: string }) => {
+  const handleBarCodeScanned = ({
+    type,
+    data,
+  }: {
+    type: string;
+    data: string;
+  }) => {
     setScanned(true);
     setText(data);
     console.log("Type: " + type + "\nData: " + data);
@@ -79,6 +102,7 @@ export default function App() {
           color="blue"
         />
       )}
+      <Button title="Sign Out" onPress={handleSignOut} />
     </View>
   );
 }

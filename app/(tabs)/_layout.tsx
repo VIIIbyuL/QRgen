@@ -1,6 +1,10 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, Tabs } from "expo-router";
 import { Pressable, useColorScheme } from "react-native";
+import { auth } from "../../firebase";
+import LoginScreen from "../customLogin";
+import { useState, useEffect } from "react";
+import { User as FirebaseUser } from "firebase/auth";
 
 import Colors from "../../constants/Colors";
 
@@ -15,7 +19,20 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
+  const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
   const colorScheme = useColorScheme();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user: FirebaseUser | null) => {
+      setCurrentUser(user);
+    });
+
+    return unsubscribe; // Unsubscribe on unmount
+  }, []);
+
+  if (!currentUser) {
+    return <LoginScreen />;
+  }
 
   return (
     <Tabs
