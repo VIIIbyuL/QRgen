@@ -36,7 +36,7 @@ export default function App() {
     // Check if the scanned text is a valid URL
     if (text.match(/https?:\/\/.+/)) {
       Linking.openURL(text).catch((err) =>
-        Alert.alert("Invalid URL", "The scanned text is not a valid URL."),
+        Alert.alert("Invalid URL", "The scanned text is not a valid URL.")
       );
     } else {
       Alert.alert("Not a URL", "The scanned text is not a URL.");
@@ -108,17 +108,18 @@ export default function App() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#F0F0F7", // Light gray background
     alignItems: "center",
     justifyContent: "center",
+    padding: 20, // Padding around the screen
   },
   maintext: {
-    fontSize: 16,
+    fontSize: 18,
     margin: 20,
+    color: "#333", // Darker text color for better readability
   },
   barcodebox: {
     alignItems: "center",
@@ -126,11 +127,24 @@ const styles = StyleSheet.create({
     height: 300,
     width: 300,
     overflow: "hidden",
-    borderRadius: 30,
-    backgroundColor: "tomato",
+    borderRadius: 10, // Rounded corners
+    backgroundColor: "#FFF", // White background
+    marginBottom: 20,
   },
   inlineView: {
-    flexDirection: "row", // Aligns children in a horizontal row
-    alignItems: "center", // Centers children vertically in the row
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  button: {
+    backgroundColor: "#007AFF", // iOS blue color
+    padding: 15,
+    borderRadius: 10, // Rounded corners
+    marginHorizontal: 10,
+  },
+  buttonText: {
+    color: "#FFF", // White text
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
