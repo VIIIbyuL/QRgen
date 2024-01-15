@@ -115,6 +115,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 20, // Padding around the screen
+    height: "100%",
+    width: "100%",
   },
   maintext: {
     fontSize: 18,

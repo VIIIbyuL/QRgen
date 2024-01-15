@@ -37,27 +37,29 @@ export default function TabTwoScreen() {
             </View>
           )}
           <TextInput
+            placeholderTextColor={"grey"}
             placeholder="Enter text to generate QR code"
             style={styles.textinput}
-            onChangeText={(text) => {
-              setInput(text);
-            }}
-          ></TextInput>
+            onChangeText={(text) => setInput(text)}
+            value={input}
+          />
 
           <Button
             title="Generate"
             color={"tomato"}
             onPress={() => {
               setValue(input);
+              setInput("");
             }}
-          ></Button>
+          />
+
           <Button
             title="Clear"
             color="blue"
             onPress={() => {
               setValue("");
             }}
-          ></Button>
+          />
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
@@ -97,6 +99,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#F0F0F7", // Light gray background
     padding: 20, // Padding around the screen
+    height: "100%",
+    width: "100%",
   },
 
   title: {
