@@ -3,6 +3,8 @@ import { Text, View, StyleSheet, Button, Linking, Alert } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { auth } from "../../firebase";
 import { signOut } from "firebase/auth";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../../firebase";
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
@@ -53,6 +55,30 @@ export default function App() {
     setScanned(true);
     setText(data);
     console.log("Type: " + type + "\nData: " + data);
+    Alert.alert(
+      "Scanned Content",
+      `Type: ${type}\nData: ${data}`,
+      [
+        { text: "OK", onPress: () => console.log("OK Pressed") },
+        // You can add more buttons if needed
+      ],
+      { cancelable: false }
+    );
+
+    // Store in Firestore
+    if (auth.currentUser) {
+      addDoc(collection(db, `users/${auth.currentUser.uid}/scannedCodes`), {
+        type: type,
+        data: data,
+        timestamp: new Date(),
+      })
+        .then((docRef) => {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch((error) => {
+          console.error("Error adding document: ", error);
+        });
+    }
   };
 
   if (hasPermission === null) {
@@ -87,7 +113,6 @@ export default function App() {
           style={{ height: 400, width: 400 }}
         />
       </View>
-      <Text style={styles.maintext}>{text}</Text>
 
       <Button title={"Scan"} onPress={() => setScanned(false)} color="tomato" />
 

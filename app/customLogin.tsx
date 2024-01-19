@@ -15,6 +15,8 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
+import { db } from "../firebase";
+import { collection, addDoc, setDoc, doc } from "firebase/firestore";
 
 const CustomLoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -25,10 +27,23 @@ const CustomLoginScreen = () => {
       .then((userCredentials) => {
         const user = userCredentials.user;
         console.log("Registered with:", user.email);
+        addUserToFirestore(user);
       })
       .catch((error) => alert(error.message));
   };
 
+  const addUserToFirestore = async (user: any) => {
+    try {
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        email: user.email,
+      });
+      console.log("User added to Firestore");
+    } catch (error) {
+      console.error("Error adding user to Firestore:", error);
+    }
+  };
+  
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
