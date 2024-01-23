@@ -43,7 +43,7 @@ const CustomLoginScreen = () => {
       console.error("Error adding user to Firestore:", error);
     }
   };
-  
+
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {

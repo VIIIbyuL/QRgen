@@ -38,7 +38,7 @@ export default function App() {
     // Check if the scanned text is a valid URL
     if (text.match(/https?:\/\/.+/)) {
       Linking.openURL(text).catch((err) =>
-        Alert.alert("Invalid URL", "The scanned text is not a valid URL.")
+        Alert.alert("Invalid URL", "The scanned text is not a valid URL."),
       );
     } else {
       Alert.alert("Not a URL", "The scanned text is not a URL.");
@@ -58,11 +58,8 @@ export default function App() {
     Alert.alert(
       "Scanned Content",
       `Type: ${type}\nData: ${data}`,
-      [
-        { text: "OK", onPress: () => console.log("OK Pressed") },
-        // You can add more buttons if needed
-      ],
-      { cancelable: false }
+      [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+      { cancelable: false },
     );
 
     // Store in Firestore

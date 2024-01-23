@@ -80,7 +80,6 @@ export default function TabLayout() {
               </Pressable>
             </Link>
           ),
-        
         }}
       />
     </Tabs>

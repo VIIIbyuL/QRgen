@@ -11,7 +11,7 @@ import {
 import { db, auth } from "../firebase";
 import { TouchableOpacity } from "react-native";
 import { Linking } from "react-native";
-import { orderBy } from "firebase/firestore"; 
+import { orderBy } from "firebase/firestore";
 
 export default function ModalScreen() {
   const [scannedCodes, setScannedCodes] = useState<DocumentData[]>([]); // Update type of scannedCodes
@@ -21,7 +21,7 @@ export default function ModalScreen() {
   };
   const openURL = (url: string) => {
     Linking.openURL(url).catch((err) =>
-      console.error("Failed to open URL:", err)
+      console.error("Failed to open URL:", err),
     );
   };
 
@@ -30,7 +30,7 @@ export default function ModalScreen() {
       if (auth.currentUser) {
         const q = query(
           collection(db, `users/${auth.currentUser.uid}/scannedCodes`),
-          orderBy("timestamp", "desc") // Order by timestamp in descending order
+          orderBy("timestamp", "desc"), // Order by timestamp in descending order
         );
         const querySnapshot = await getDocs(q);
         const codes = querySnapshot.docs.map((doc) => ({
