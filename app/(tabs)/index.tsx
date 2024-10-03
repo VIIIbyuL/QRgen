@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Text, View, StyleSheet, Button, Linking, Alert } from "react-native";
-import { BarCodeScanner } from "expo-barcode-scanner";
+import { Camera, CameraView } from "expo-camera";
 import { auth } from "../../firebase";
 import { signOut } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
@@ -10,6 +10,8 @@ export default function App() {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
   const [text, setText] = useState("Not yet scanned");
+  const cameraRef = useRef<CameraView | null>(null);
+
 
   const handleSignOut = () => {
     signOut(auth)
@@ -25,7 +27,7 @@ export default function App() {
 
   const askForCameraPermission = () => {
     (async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      const { status } = await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === "granted");
     })();
   };
@@ -105,9 +107,17 @@ export default function App() {
       </View>
 
       <View style={styles.barcodebox}>
-        <BarCodeScanner
+        {/* <Camera
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
           style={{ height: 400, width: 400 }}
+        /> */}
+        <CameraView
+          ref={cameraRef}
+          style={{ flex: 1 }}
+          onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
+          barcodeScannerSettings={{
+            barcodeTypes: ["qr"],
+          }}
         />
       </View>
 
